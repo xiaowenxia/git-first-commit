@@ -218,20 +218,23 @@ inside:
 int main(int argc, char **argv)
 {
 	int i, newfd, entries;
-	printf("update-cache\r\n");
+	printf("[debug] update-cache\r\n");
 	entries = read_cache();
 	if (entries < 0) {
 		perror("cache corrupted");
 		return -1;
 	}
 
+	/* 创建临时索引文件，同时也起到上锁作用 */
 	newfd = open(".dircache/index.lock", O_RDWR | O_CREAT | O_EXCL, 0600);
 	if (newfd < 0) {
 		perror("unable to create new cachefile");
 		return -1;
 	}
+	/* 逐个添加文件 */
 	for (i = 1 ; i < argc; i++) {
 		char *path = argv[i];
+		/* 校验path路径格式 */
 		if (!verify_path(path)) {
 			fprintf(stderr, "Ignoring path %s\n", argv[i]);
 			continue;

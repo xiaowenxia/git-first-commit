@@ -216,7 +216,7 @@ int read_cache(void)
 	errno = EBUSY;
 	if (active_cache)
 		return error("more than one cachefile");
-	printf("read_cache\r\n");
+	printf("[debug] read_cache\r\n");
 	errno = ENOENT;
 	/* 获取objects目录 */
 	sha1_file_directory = getenv(DB_ENVIRONMENT);
@@ -229,11 +229,11 @@ int read_cache(void)
 	if (fd < 0)
 		/* 索引文件不存在时，会返回到主函数创建该文件 */
 		return (errno == ENOENT) ? 0 : error("open failed");
-	printf(".dircache/index 打开成功 \r\n");
+	printf("[debug] .dircache/index 打开成功 \r\n");
 	map = (void *)-1;
 	if (!fstat(fd, &st)) {
 		/* 文件信息读取成功 */
-		printf("文件信息读取成功，size: %d\r\n", st.st_size);
+		printf("[debug] 文件信息读取成功，size: %d\r\n", st.st_size);
 		map = NULL;
 		size = st.st_size;
 		errno = EINVAL;

@@ -31,6 +31,7 @@ int main(int argc, char **argv)
 	char *buffer;
 
 	if (entries <= 0) {
+		/* 无需写入树结构 */
 		fprintf(stderr, "No file-cache to create a tree of\n");
 		exit(1);
 	}
@@ -42,6 +43,7 @@ int main(int argc, char **argv)
 
 	for (i = 0; i < entries; i++) {
 		struct cache_entry *ce = active_cache[i];
+		/* 检查objects对象的sha1值是否和对应文件的内容sha1值是否一致。（本函数其实并未实现功能）*/
 		if (check_valid_sha1(ce->sha1) < 0)
 			exit(1);
 		if (offset + ce->namelen + 60 > size) {
